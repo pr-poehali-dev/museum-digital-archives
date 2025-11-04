@@ -17,6 +17,18 @@ interface Artifact {
   description: string;
   condition: string;
   task: string;
+  taskType: 'restoration' | 'cataloging' | 'research';
+  skillsNeeded: string[];
+  progress: number;
+}
+
+interface VolunteerTask {
+  id: string;
+  artifactId: string;
+  type: string;
+  description: string;
+  status: 'open' | 'in-progress' | 'completed';
+  assignedTo?: string;
 }
 
 const artifacts: Artifact[] = [
@@ -30,7 +42,10 @@ const artifacts: Artifact[] = [
     image: 'https://cdn.poehali.dev/projects/12112b27-cb6d-48ca-83e3-7cd1997b77e9/files/b6e0f7dd-958a-407e-a15e-656d7be95208.jpg',
     description: 'Краснофигурная амфора с изображением сцен из греческой мифологии',
     condition: 'Требуется идентификация фрагментов росписи',
-    task: 'Помощь в атрибуции и датировке изображений'
+    task: 'Помощь в атрибуции и датировке изображений',
+    taskType: 'research',
+    skillsNeeded: ['Античное искусство', 'Греческая мифология', 'Иконография'],
+    progress: 65
   },
   {
     id: '2',
@@ -42,7 +57,10 @@ const artifacts: Artifact[] = [
     image: 'https://cdn.poehali.dev/projects/12112b27-cb6d-48ca-83e3-7cd1997b77e9/files/24df0d21-674b-4838-824f-00ac55b0b9c0.jpg',
     description: 'Иллюминированная рукопись с золотым орнаментом',
     condition: 'Частичное выцветание текста и миниатюр',
-    task: 'Расшифровка текста и описание декоративных элементов'
+    task: 'Расшифровка текста и описание декоративных элементов',
+    taskType: 'cataloging',
+    skillsNeeded: ['Палеография', 'Средневековая латынь', 'Кодикология'],
+    progress: 40
   },
   {
     id: '3',
@@ -54,15 +72,65 @@ const artifacts: Artifact[] = [
     image: 'https://cdn.poehali.dev/projects/12112b27-cb6d-48ca-83e3-7cd1997b77e9/files/278d1acf-3ca5-41ee-acd8-cb430d9abdbb.jpg',
     description: 'Известняковая стела с иероглифическими надписями',
     condition: 'Сохранность хорошая, требуется перевод',
-    task: 'Перевод и интерпретация иероглифических текстов'
+    task: 'Перевод и интерпретация иероглифических текстов',
+    taskType: 'research',
+    skillsNeeded: ['Египтология', 'Иероглифика', 'История Древнего Египта'],
+    progress: 85
+  },
+  {
+    id: '4',
+    title: 'Византийская икона',
+    museum: 'Третьяковская галерея',
+    period: 'XIV век',
+    status: 'active',
+    volunteers: 6,
+    image: 'https://cdn.poehali.dev/projects/12112b27-cb6d-48ca-83e3-7cd1997b77e9/files/b6e0f7dd-958a-407e-a15e-656d7be95208.jpg',
+    description: 'Икона Богоматери с младенцем, темперная живопись на дереве',
+    condition: 'Повреждения красочного слоя, потемнение олифы',
+    task: 'Документирование состояния сохранности и технологический анализ',
+    taskType: 'restoration',
+    skillsNeeded: ['Реставрация темперной живописи', 'Иконография', 'Византийское искусство'],
+    progress: 20
+  },
+  {
+    id: '5',
+    title: 'Китайская фарфоровая ваза',
+    museum: 'Музей Востока',
+    period: 'Династия Цин, XVIII век',
+    status: 'active',
+    volunteers: 10,
+    image: 'https://cdn.poehali.dev/projects/12112b27-cb6d-48ca-83e3-7cd1997b77e9/files/24df0d21-674b-4838-824f-00ac55b0b9c0.jpg',
+    description: 'Фарфоровая ваза с подглазурной росписью кобальтом',
+    condition: 'Множественные трещины и сколы',
+    task: 'Классификация орнаментов и идентификация мастерской',
+    taskType: 'cataloging',
+    skillsNeeded: ['Китайское искусство', 'Керамика', 'Китайская иероглифика'],
+    progress: 55
+  },
+  {
+    id: '6',
+    title: 'Древнерусская летопись',
+    museum: 'Российская государственная библиотека',
+    period: 'XV век',
+    status: 'active',
+    volunteers: 14,
+    image: 'https://cdn.poehali.dev/projects/12112b27-cb6d-48ca-83e3-7cd1997b77e9/files/278d1acf-3ca5-41ee-acd8-cb430d9abdbb.jpg',
+    description: 'Рукописный список летописи с миниатюрами',
+    condition: 'Утраты листов, загрязнения, повреждения переплёта',
+    task: 'Транскрипция текста и описание миниатюр',
+    taskType: 'cataloging',
+    skillsNeeded: ['Древнерусский язык', 'Палеография', 'История Руси'],
+    progress: 30
   }
 ];
 
 const museums = [
-  { name: 'Государственный Эрмитаж', projects: 47 },
-  { name: 'ГМИИ им. А.С. Пушкина', projects: 32 },
-  { name: 'Российская национальная библиотека', projects: 28 },
-  { name: 'Государственный исторический музей', projects: 21 }
+  { name: 'Государственный Эрмитаж', projects: 47, volunteers: 234 },
+  { name: 'ГМИИ им. А.С. Пушкина', projects: 32, volunteers: 189 },
+  { name: 'Российская национальная библиотека', projects: 28, volunteers: 156 },
+  { name: 'Государственный исторический музей', projects: 21, volunteers: 98 },
+  { name: 'Третьяковская галерея', projects: 18, volunteers: 87 },
+  { name: 'Музей Востока', projects: 15, volunteers: 72 }
 ];
 
 export default function Index() {
@@ -87,6 +155,24 @@ export default function Index() {
     }
   };
 
+  const getTaskTypeIcon = (type: string) => {
+    switch (type) {
+      case 'restoration': return 'Hammer';
+      case 'cataloging': return 'BookOpen';
+      case 'research': return 'Search';
+      default: return 'Circle';
+    }
+  };
+
+  const getTaskTypeColor = (type: string) => {
+    switch (type) {
+      case 'restoration': return 'bg-orange-100 text-orange-800';
+      case 'cataloging': return 'bg-blue-100 text-blue-800';
+      case 'research': return 'bg-purple-100 text-purple-800';
+      default: return 'bg-gray-100 text-gray-800';
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b bg-white/50 backdrop-blur-sm sticky top-0 z-50">
@@ -102,6 +188,12 @@ export default function Index() {
                 className={`text-sm font-medium transition-colors hover:text-primary ${activeTab === 'projects' ? 'text-primary' : 'text-muted-foreground'}`}
               >
                 Проекты
+              </button>
+              <button 
+                onClick={() => setActiveTab('volunteers')}
+                className={`text-sm font-medium transition-colors hover:text-primary ${activeTab === 'volunteers' ? 'text-primary' : 'text-muted-foreground'}`}
+              >
+                Волонтёры
               </button>
               <button 
                 onClick={() => setActiveTab('museums')}
@@ -172,12 +264,21 @@ export default function Index() {
                       alt={artifact.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
-                    <Badge className={`absolute top-4 right-4 ${getStatusColor(artifact.status)}`}>
-                      {getStatusText(artifact.status)}
-                    </Badge>
+                    <div className="absolute top-4 right-4 flex gap-2">
+                      <Badge className={getStatusColor(artifact.status)}>
+                        {getStatusText(artifact.status)}
+                      </Badge>
+                    </div>
                   </div>
                   <CardHeader>
-                    <CardTitle className="font-serif text-2xl">{artifact.title}</CardTitle>
+                    <div className="flex items-start gap-2 mb-2">
+                      <div className={`p-2 rounded-lg ${getTaskTypeColor(artifact.taskType)}`}>
+                        <Icon name={getTaskTypeIcon(artifact.taskType) as any} size={20} />
+                      </div>
+                      <div className="flex-1">
+                        <CardTitle className="font-serif text-xl">{artifact.title}</CardTitle>
+                      </div>
+                    </div>
                     <CardDescription className="flex flex-col gap-1">
                       <span className="flex items-center gap-2">
                         <Icon name="Building2" size={14} />
@@ -190,15 +291,36 @@ export default function Index() {
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <Icon name="Users" size={16} />
-                        <span>{artifact.volunteers} волонтёров</span>
+                    <div className="space-y-3">
+                      <div className="flex flex-wrap gap-2">
+                        {artifact.skillsNeeded.slice(0, 2).map((skill, i) => (
+                          <Badge key={i} variant="outline" className="text-xs">
+                            {skill}
+                          </Badge>
+                        ))}
                       </div>
-                      <Button size="sm" variant="ghost">
-                        Подробнее
-                        <Icon name="ArrowRight" size={16} className="ml-2" />
-                      </Button>
+                      <div className="space-y-1">
+                        <div className="flex items-center justify-between text-xs text-muted-foreground">
+                          <span>Прогресс</span>
+                          <span>{artifact.progress}%</span>
+                        </div>
+                        <div className="w-full bg-muted h-2 rounded-full overflow-hidden">
+                          <div 
+                            className="bg-primary h-full transition-all"
+                            style={{ width: `${artifact.progress}%` }}
+                          />
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <Icon name="Users" size={16} />
+                          <span>{artifact.volunteers} волонтёров</span>
+                        </div>
+                        <Button size="sm" variant="ghost">
+                          Подробнее
+                          <Icon name="ArrowRight" size={16} className="ml-2" />
+                        </Button>
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
@@ -219,6 +341,117 @@ export default function Index() {
           </>
         )}
 
+        {activeTab === 'volunteers' && (
+          <div className="animate-fade-in">
+            <h2 className="text-4xl font-bold mb-8 font-serif text-center">Сообщество волонтёров</h2>
+            
+            <div className="grid md:grid-cols-3 gap-6 mb-12">
+              <Card className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950 dark:to-blue-900 border-blue-200">
+                <CardHeader>
+                  <Icon name="Users" size={48} className="text-blue-600 mb-4" />
+                  <CardTitle className="font-serif text-3xl">2,847</CardTitle>
+                  <CardDescription>Активных волонтёров</CardDescription>
+                </CardHeader>
+              </Card>
+              
+              <Card className="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-950 dark:to-green-900 border-green-200">
+                <CardHeader>
+                  <Icon name="CheckCircle" size={48} className="text-green-600 mb-4" />
+                  <CardTitle className="font-serif text-3xl">1,234</CardTitle>
+                  <CardDescription>Завершённых задач</CardDescription>
+                </CardHeader>
+              </Card>
+              
+              <Card className="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-950 dark:to-purple-900 border-purple-200">
+                <CardHeader>
+                  <Icon name="Globe" size={48} className="text-purple-600 mb-4" />
+                  <CardTitle className="font-serif text-3xl">87</CardTitle>
+                  <CardDescription>Стран участвуют</CardDescription>
+                </CardHeader>
+              </Card>
+            </div>
+
+            <Card className="mb-8">
+              <CardHeader>
+                <CardTitle className="font-serif text-2xl">Как стать волонтёром</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid md:grid-cols-3 gap-6">
+                  <div className="text-center space-y-3">
+                    <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
+                      <Icon name="UserPlus" size={32} className="text-primary" />
+                    </div>
+                    <h3 className="font-semibold">1. Регистрация</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Создайте профиль и укажите свои интересы и навыки
+                    </p>
+                  </div>
+                  
+                  <div className="text-center space-y-3">
+                    <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
+                      <Icon name="Search" size={32} className="text-primary" />
+                    </div>
+                    <h3 className="font-semibold">2. Выбор проекта</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Найдите задачу, соответствующую вашим знаниям
+                    </p>
+                  </div>
+                  
+                  <div className="text-center space-y-3">
+                    <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
+                      <Icon name="Heart" size={32} className="text-primary" />
+                    </div>
+                    <h3 className="font-semibold">3. Помощь музеям</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Вносите вклад в сохранение культурного наследия
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="font-serif text-2xl">Типы задач для волонтёров</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid md:grid-cols-3 gap-4">
+                  <div className="p-4 border rounded-lg hover:border-primary transition-colors">
+                    <Icon name="Hammer" size={24} className="text-primary mb-2" />
+                    <h4 className="font-semibold mb-2">Реставрация</h4>
+                    <p className="text-sm text-muted-foreground">
+                      Документирование повреждений, консультации по методам восстановления
+                    </p>
+                  </div>
+                  
+                  <div className="p-4 border rounded-lg hover:border-primary transition-colors">
+                    <Icon name="BookOpen" size={24} className="text-primary mb-2" />
+                    <h4 className="font-semibold mb-2">Каталогизация</h4>
+                    <p className="text-sm text-muted-foreground">
+                      Описание артефактов, создание метаданных, систематизация
+                    </p>
+                  </div>
+                  
+                  <div className="p-4 border rounded-lg hover:border-primary transition-colors">
+                    <Icon name="Search" size={24} className="text-primary mb-2" />
+                    <h4 className="font-semibold mb-2">Исследования</h4>
+                    <p className="text-sm text-muted-foreground">
+                      Атрибуция, датировка, перевод текстов, искусствоведческий анализ
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <div className="text-center mt-8">
+              <Button size="lg">
+                <Icon name="UserPlus" size={20} className="mr-2" />
+                Зарегистрироваться как волонтёр
+              </Button>
+            </div>
+          </div>
+        )}
+
         {activeTab === 'museums' && (
           <div className="animate-fade-in">
             <h2 className="text-4xl font-bold mb-8 font-serif text-center">Музеи-участники</h2>
@@ -232,9 +465,15 @@ export default function Index() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="flex items-center justify-between">
-                      <span className="text-muted-foreground">Активных проектов:</span>
-                      <Badge variant="secondary">{museum.projects}</Badge>
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="text-muted-foreground">Активных проектов:</span>
+                        <Badge variant="secondary">{museum.projects}</Badge>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-muted-foreground">Волонтёров:</span>
+                        <Badge variant="outline">{museum.volunteers}</Badge>
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
@@ -316,8 +555,9 @@ export default function Index() {
                 <DialogTitle className="font-serif text-3xl">{selectedArtifact.title}</DialogTitle>
               </DialogHeader>
               <Tabs defaultValue="details" className="w-full">
-                <TabsList className="grid w-full grid-cols-3">
+                <TabsList className="grid w-full grid-cols-4">
                   <TabsTrigger value="details">Описание</TabsTrigger>
+                  <TabsTrigger value="tasks">Задачи</TabsTrigger>
                   <TabsTrigger value="annotation">Разметка</TabsTrigger>
                   <TabsTrigger value="discussion">Обсуждение</TabsTrigger>
                 </TabsList>
@@ -347,6 +587,28 @@ export default function Index() {
                     </div>
                   </div>
                   <div>
+                    <h4 className="font-semibold mb-3">Необходимые навыки</h4>
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {selectedArtifact.skillsNeeded.map((skill, i) => (
+                        <Badge key={i} variant="secondary">
+                          {skill}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <h4 className="font-semibold">Прогресс проекта</h4>
+                      <span className="text-sm text-muted-foreground">{selectedArtifact.progress}%</span>
+                    </div>
+                    <div className="w-full bg-muted h-3 rounded-full overflow-hidden">
+                      <div 
+                        className="bg-primary h-full transition-all"
+                        style={{ width: `${selectedArtifact.progress}%` }}
+                      />
+                    </div>
+                  </div>
+                  <div>
                     <h4 className="font-semibold mb-2">Описание</h4>
                     <p className="text-sm text-muted-foreground">{selectedArtifact.description}</p>
                   </div>
@@ -354,6 +616,87 @@ export default function Index() {
                     <Icon name="Hand" size={20} className="mr-2" />
                     Присоединиться к проекту
                   </Button>
+                </TabsContent>
+                <TabsContent value="tasks" className="space-y-4">
+                  <div className="space-y-3">
+                    <Card>
+                      <CardHeader>
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <CardTitle className="text-lg">Идентификация мифологических сцен</CardTitle>
+                            <CardDescription>Определить изображённые мифы и персонажей</CardDescription>
+                          </div>
+                          <Badge className="bg-green-100 text-green-800">Открыта</Badge>
+                        </div>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="space-y-3">
+                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                            <Icon name="Users" size={16} />
+                            <span>3 волонтёра работают</span>
+                          </div>
+                          <div className="flex flex-wrap gap-2">
+                            <Badge variant="outline" className="text-xs">Греческая мифология</Badge>
+                            <Badge variant="outline" className="text-xs">Иконография</Badge>
+                          </div>
+                          <Button size="sm" className="w-full">
+                            <Icon name="Plus" size={16} className="mr-2" />
+                            Взять задачу
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    <Card>
+                      <CardHeader>
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <CardTitle className="text-lg">Анализ техники росписи</CardTitle>
+                            <CardDescription>Описание красок и методов нанесения</CardDescription>
+                          </div>
+                          <Badge className="bg-yellow-100 text-yellow-800">В работе</Badge>
+                        </div>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="space-y-3">
+                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                            <Icon name="User" size={16} />
+                            <span>Анна Петрова</span>
+                          </div>
+                          <div className="flex flex-wrap gap-2">
+                            <Badge variant="outline" className="text-xs">Керамика</Badge>
+                            <Badge variant="outline" className="text-xs">Античное искусство</Badge>
+                          </div>
+                          <div className="w-full bg-muted h-2 rounded-full overflow-hidden">
+                            <div className="bg-primary h-full" style={{ width: '65%' }} />
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    <Card>
+                      <CardHeader>
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <CardTitle className="text-lg">Датировка по стилю</CardTitle>
+                            <CardDescription>Уточнение периода создания артефакта</CardDescription>
+                          </div>
+                          <Badge className="bg-gray-100 text-gray-800">Завершена</Badge>
+                        </div>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="space-y-3">
+                          <div className="flex items-center gap-2 text-sm text-green-600">
+                            <Icon name="CheckCircle" size={16} />
+                            <span>Проверено экспертом музея</span>
+                          </div>
+                          <div className="text-sm text-muted-foreground">
+                            Результат: V век до н.э., раннеклассический период
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
                 </TabsContent>
                 <TabsContent value="annotation" className="space-y-4">
                   <ArtifactAnnotation image={selectedArtifact.image} />
