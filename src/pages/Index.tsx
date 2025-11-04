@@ -94,7 +94,7 @@ export default function Index() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Icon name="Museum" size={32} className="text-primary" />
-              <h1 className="text-3xl font-bold text-primary font-serif">Цифровой Архив</h1>
+              <h1 className="text-2xl font-bold text-primary font-serif">Музейные сокровища: Спасение и сохранение</h1>
             </div>
             <nav className="hidden md:flex gap-6">
               <button 
@@ -259,7 +259,7 @@ export default function Index() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <p className="text-muted-foreground">
-                    Цифровой Архив — это глобальная платформа, объединяющая музеи и волонтёров 
+                    Музейные сокровища: Спасение и сохранение — это глобальная платформа, объединяющая музеи и волонтёров 
                     для совместной работы по сохранению культурного наследия. Мы создаём цифровые 
                     копии артефактов и привлекаем экспертов со всего мира для их изучения и реставрации.
                   </p>
@@ -372,7 +372,7 @@ export default function Index() {
 
       <footer className="border-t mt-24 py-12 bg-muted/30">
         <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-          <p className="mb-2">© 2024 Цифровой Архив. Сохраняем культурное наследие вместе.</p>
+          <p className="mb-2">© 2024 Музейные сокровища: Спасение и сохранение. Сохраняем культурное наследие вместе.</p>
           <div className="flex justify-center gap-6">
             <a href="#" className="hover:text-primary transition-colors">Контакты</a>
             <a href="#" className="hover:text-primary transition-colors">Документация</a>
